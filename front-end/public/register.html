@@ -6,47 +6,46 @@
     <title>Document</title>
 </head>
 <body>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
-<script>
-async function register(event) {
-    event.preventDefault();
 
-    const name = document.querySelector('#name').value;
-    const email = document.querySelector('#email').value;
-    const password = document.querySelector('#password').value;
-
-    try {
-        const response = await axios.post('http://localhost:7777/api/bookUser', {
-            userName:name, 
-            userEmail:email, 
-            userPass:password
-        });
-    } catch(error) {
-        const data = error.response.data;
-        if(data) {
-            const state = data.error;
-            alert(state); 
-        }
-    }
-}
-
-function bindRegisterButton() {
-    const form = document.querySelector('#form-register');
-    form.addEventListener('submit', register);
-}
-
-async function main() {
-    bindRegisterButton();
-}
-
-document.addEventListener('DOMContentLoaded', main);
-</script>
-    <form id="form-register">
-        <label>Name <input type="text" placeholder="Name" required id="name"></label>
-        <label>Email <input type="email" placeholder="Email" required id="email"></label>
-        <label>Password <input type="password" placeholder="Password" required id="password"></label>
-        <label for="inputPassword" class="sr-only">Password</label>
+<div id="app">
+    <form @submit.prevent="insertUser">
+        <label>Name <input type="text" placeholder="Name" required v-model="name"></label>
+        <label>Email <input type="email" placeholder="Email" required v-model="email"></label>
+        <label>Password <input type="password" placeholder="Password" required v-model="password"></label>
         <button>Sign Up</button>
-      </form>  
+    </form>  
+</div>
+
+<script>
+    var app = new Vue({
+        el: '#app',
+        data() {
+            return {
+                name:'',
+                email:'',
+                password:''
+            }
+        },
+        methods: {
+            insertUser() {
+                axios
+                    .post('http://localhost:7777/api/bookUser', {
+                        userName: this.name,
+                        userEmail: this.email,
+                        userPass: this.password
+                    })
+                    .then(response => {
+                        alert('회원가입 완료');
+                        location.href="login.html";
+                    })
+                    .catch(error => {
+                        alert(error.response.data.error);
+                    })
+            }
+        }
+    })
+</script>
 </body>
 </html>
