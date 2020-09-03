@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<properties resource="config/jdbc.properties"/>
+	
+    <typeAliases>
+    	<package name="com.ednadev.book.domain"/>
+    </typeAliases>
+    
+    <environments default="develop">
+        <environment id="develop">
+            <transactionManager type="JDBC"/>
+            <dataSource type="UNPOOLED">
+                <property name="driver" value="${JDBC.Driver}"/>
+                <property name="url" value="${JDBC.ConnectionURL}"/>
+                <property name="username" value="${JDBC.Username}"/>
+                <property name="password" value="${JDBC.Password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+    
+    <mappers>
+    	<mapper resource="sql/bookuser-mapping.xml"/>
+    </mappers>
+</configuration>
