@@ -5,7 +5,13 @@
 <mapper namespace="UserMapper">
     <insert id="insertUser" parameterType="bookUser">
     	INSERT
-    	INTO book_user(user_email, user_pass, user_name)
-    	VALUES(#{userEmail}, #{userPass}, #{userName})
+    	<if test="userPass != null">
+    		INTO book_user(user_email, user_pass, user_name)
+    		VALUES(#{userEmail}, #{userPass}, #{userName})
+    	</if>
+    	<if test="userPass == null">
+    		INTO book_user(user_email, user_name, user_img)
+			VALUES(#{userEmail}, #{userName}, #{userImg})
+    	</if>
     </insert>
 </mapper>

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ednadev.book.domain.BookUser;
 import com.ednadev.book.service.BookUserService;
+import com.ednadev.book.util.AES256Util;
 
 @RestController
 @RequestMapping("api")
@@ -22,6 +23,13 @@ public class BookUserController {
 	
 	@PostMapping("bookUser")
 	public ResponseEntity insertBookUser(@RequestBody BookUser bookUser) throws Exception {
+		
+		//패스워드 암호화
+		if(bookUser.getUserPass()!=null) {
+			AES256Util aes256 = new AES256Util("aes256-password-key");
+			bookUser.setUserPass(aes256.encrypt(bookUser.getUserPass()));
+		}
+		
 		service.insertBookUser(bookUser);
 		return new ResponseEntity(HttpStatus.OK);
 	}

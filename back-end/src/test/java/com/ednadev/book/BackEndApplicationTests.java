@@ -22,9 +22,9 @@ class BackEndApplicationTests {
 		SqlSession session = factory.openSession();
 		
 		BookUser bookUser = new BookUser();
-		bookUser.setUserEmail("ednadev@naver.com");
+		bookUser.setUserEmail("ednadev123@naver.com");
 		bookUser.setUserName("김미경");
-		bookUser.setUserPass("1234");
+		bookUser.setUserImg("이미지가 들어가는 곳");
 		session.insert("UserMapper.insertUser", bookUser);
 		session.commit();
 		System.out.println("회원가입");

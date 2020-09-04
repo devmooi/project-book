@@ -149,7 +149,10 @@
 	                        location.href="/";
 	                    })
 	                    .catch(error => {
-	                        alert(error.response.data.error);
+                            alert('이미 가입된 이메일 주소입니다.');
+                            this.email = '';
+                            const email = document.querySelector('[type=email]');
+                            email.focus();
 	                    })
 	            }
 	        }
@@ -162,17 +165,9 @@
         naver_id_login.setDomain("http://127.0.0.1:7777");
         naver_id_login.setState(state);
         naver_id_login.init_naver_id_login();
-	</script>
 
-
-    <!-- 카카오 -->
-    
-    <script type="text/javascript">
-        //SDK를 초기화 합니다. 사용할 앱의 JavaScript 키를 설정해 주세요.
+        // 카카오
         Kakao.init('55f727febd8ca480e11cb0c8e0acb51f');
-
-        // SDK 초기화 여부를 판단합니다.
-        console.log(Kakao.isInitialized());
 
         Kakao.Auth.createLoginButton({
             container: '#kakao-login-btn',
@@ -181,10 +176,25 @@
             Kakao.API.request({
                 url: '/v2/user/me',
                 success: function(res) {
-                alert(JSON.stringify(res))
+                    const name = JSON.stringify(res.kakao_account.profile.nickname).replace(/^"(.+)"$/,'$1');
+                    const email = JSON.stringify(res.kakao_account.email).replace(/^"(.+)"$/,'$1');
+
+                    axios
+	                    .post('http://localhost:7777/api/bookUser', {
+	                        userName: name,
+	                        userEmail: email,
+	                    })
+	                    .then(response => {
+	                        alert('회원가입 완료');
+	                        location.href="/";
+	                    })
+	                    .catch(error => {
+                            alert('이미 가입된 회원입니다.');
+                            location.href="/register.html";
+	                    })
                 },
                 fail: function(error) {
-                alert(
+                console.log(
                     'login success, but failed to request user information: ' +
                     JSON.stringify(error)
                 )
@@ -195,6 +205,6 @@
             alert('failed to login: ' + JSON.stringify(err))
             },
         })
-    </script>
+	</script>
 </body>
 </html>
