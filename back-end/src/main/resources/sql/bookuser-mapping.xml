@@ -3,6 +3,13 @@
  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="UserMapper">
+	<resultMap type="bookUser" id="bookUserRM">
+		<result property="userEmail" column="user_email"/>
+		<result property="userPass" column="user_pass"/>
+		<result property="userName" column="user_name"/>
+		<result property="userImg" column="user_img"/>
+	</resultMap>
+	
     <insert id="insertUser" parameterType="bookUser">
     	INSERT
     	<if test="userPass != null">
@@ -14,4 +21,9 @@
 			VALUES(#{userEmail}, #{userName}, #{userImg})
     	</if>
     </insert>
+    
+    <select id="login" parameterType="bookUser" resultMap="bookUserRM">
+    	SELECT * FROM book_user
+    	WHERE user_email = #{userEmail} AND user_pass = #{userPass}
+    </select>
 </mapper>

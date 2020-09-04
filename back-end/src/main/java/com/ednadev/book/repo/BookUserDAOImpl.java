@@ -17,4 +17,9 @@ public class BookUserDAOImpl implements BookUserDAO {
 		sqlSession.insert("UserMapper.insertUser", bookUser);
 	}
 
+	@Override
+	public BookUser login(BookUser bookUser) throws Exception {
+		return sqlSession.selectOne("UserMapper.login", bookUser);
+	}
+
 }

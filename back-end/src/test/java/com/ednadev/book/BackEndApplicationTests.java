@@ -22,12 +22,21 @@ class BackEndApplicationTests {
 		SqlSession session = factory.openSession();
 		
 		BookUser bookUser = new BookUser();
-		bookUser.setUserEmail("ednadev123@naver.com");
-		bookUser.setUserName("김미경");
-		bookUser.setUserImg("이미지가 들어가는 곳");
-		session.insert("UserMapper.insertUser", bookUser);
-		session.commit();
-		System.out.println("회원가입");
+//		bookUser.setUserEmail("ednadev123@naver.com");
+//		bookUser.setUserName("김미경");
+//		bookUser.setUserImg("이미지가 들어가는 곳");
+//		session.insert("UserMapper.insertUser", bookUser);
+//		session.commit();
+//		System.out.println("회원가입");
+		
+		bookUser.setUserEmail("test01@naver.com");
+		bookUser.setUserPass("1111");
+//		session.insert("UserMapper.insertUser", bookUser);
+//		session.commit();
+		BookUser user = session.selectOne("UserMapper.login", bookUser);
+		System.out.println(user);
+		
+		
 	}
 
 }

@@ -17,4 +17,9 @@ public class BookUserServiceImpl implements BookUserService {
 		dao.insertBookUser(bookUser);
 	}
 
+	@Override
+	public BookUser login(BookUser bookUser) throws Exception {
+		return dao.login(bookUser);
+	}
+
 }
