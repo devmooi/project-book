@@ -24,6 +24,11 @@
     
     <select id="login" parameterType="bookUser" resultMap="bookUserRM">
     	SELECT * FROM book_user
-    	WHERE user_email = #{userEmail} AND user_pass = #{userPass}
+    	<where>
+    		user_email = #{userEmail}
+    		<if test="userPass!=null">
+    			AND user_pass = #{userPass}
+    		</if>
+    	</where>
     </select>
 </mapper>

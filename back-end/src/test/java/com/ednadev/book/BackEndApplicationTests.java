@@ -30,7 +30,7 @@ class BackEndApplicationTests {
 //		System.out.println("회원가입");
 		
 		bookUser.setUserEmail("test01@naver.com");
-		bookUser.setUserPass("1111");
+		//bookUser.setUserPass("1234");
 //		session.insert("UserMapper.insertUser", bookUser);
 //		session.commit();
 		BookUser user = session.selectOne("UserMapper.login", bookUser);

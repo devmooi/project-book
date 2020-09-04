@@ -1,5 +1,7 @@
 package com.ednadev.book.controller;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +25,7 @@ public class BookUserController {
 	private BookUserService service;
 	
 	@PostMapping("bookUser")
-	public ResponseEntity insertBookUser(@RequestBody BookUser bookUser) throws Exception {
+	public ResponseEntity insertBookUser(@RequestBody BookUser bookUser, HttpSession session) throws Exception {
 		
 		//패스워드 암호화
 		if(bookUser.getUserPass()!=null) {
@@ -32,12 +34,22 @@ public class BookUserController {
 		}
 		
 		service.insertBookUser(bookUser);
-		return new ResponseEntity(HttpStatus.OK);
+		session.setAttribute("bookUser", bookUser);
+		return new ResponseEntity(session.getId(), HttpStatus.OK);
 	}
 	
-	@GetMapping("login")
-	public ResponseEntity login(@RequestBody BookUser bookUser) throws Exception {
-		return new ResponseEntity(service.login(bookUser), HttpStatus.OK);
+	@PostMapping("login")
+	public ResponseEntity login(@RequestBody BookUser bookUser, HttpSession session) throws Exception {
+		//패스워드 암호화
+		if(bookUser.getUserPass()!=null) {
+			AES256Util aes256 = new AES256Util("aes256-password-key");
+			bookUser.setUserPass(aes256.encrypt(bookUser.getUserPass()));
+		}
+		
+		BookUser user = service.login(bookUser);
+		if(user==null) return new ResponseEntity(HttpStatus.NO_CONTENT);
+		session.setAttribute("bookUser", user);
+		return new ResponseEntity(session.getId(), HttpStatus.OK);
 	}
 		
 }

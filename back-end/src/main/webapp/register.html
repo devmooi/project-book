@@ -48,6 +48,7 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            color:#134775;
 	    }
         form h2 {
             font-size: 2rem;
@@ -127,6 +128,13 @@
     </div>
     
     <script>
+        function getToken() {
+            return localStorage.getItem('bookToken');
+        }
+        const token = getToken();
+        if(token!==null) {
+            location.assign('/');
+        }
 	    var app = new Vue({
 	        el: '#container',
 	        data() {
@@ -145,8 +153,8 @@
 	                        userPass: this.password
 	                    })
 	                    .then(response => {
-	                        alert('회원가입 완료');
-	                        location.href="/";
+	                        localStorage.setItem('bookToken', response.data);
+                            location="/";
 	                    })
 	                    .catch(error => {
                             alert('이미 가입된 이메일 주소입니다.');
@@ -185,12 +193,18 @@
 	                        userEmail: email,
 	                    })
 	                    .then(response => {
-	                        alert('회원가입 완료');
-	                        location.href="/";
+	                        localStorage.setItem('bookToken', response.data);
+                            location="/";
 	                    })
 	                    .catch(error => {
-                            alert('이미 가입된 회원입니다.');
-                            location.href="/register.html";
+                            axios
+                                .post('http://localhost:7777/api/login', {
+                                    userEmail: email
+                                })
+                                .then(response => {
+                                    localStorage.setItem('bookToken', response.data);
+                                    location="/";
+                                })
 	                    })
                 },
                 fail: function(error) {
