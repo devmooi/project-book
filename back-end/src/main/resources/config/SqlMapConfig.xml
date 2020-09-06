@@ -23,5 +23,6 @@
     
     <mappers>
     	<mapper resource="sql/bookuser-mapping.xml"/>
+    	<mapper resource="sql/book-mapping.xml"/>
     </mappers>
 </configuration>

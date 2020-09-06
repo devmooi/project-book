@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="BookMapper">
+	<resultMap type="book" id="bookRM">
+		<result property="bookIsbn" column="book_isbn"/>
+		<result property="bookImg" column="book_img"/>
+		<result property="bookTitle" column="book_title"/>
+		<result property="bookAuthor" column="book_author"/>
+		<result property="bookPublisher" column="book_publisher"/>
+		<result property="bookPubdate" column="book_pubdate"/>
+		<result property="bookDesc" column="book_desc"/>
+	</resultMap>
+	
+	<insert id="insertBook" parameterType="book">
+		INSERT INTO book(book_isbn, book_img, book_title, book_author, book_publisher, book_pubdate, book_desc)
+		VALUES(#{bookIsbn}, #{bookImg}, #{bookTitle}, #{bookAuthor}, #{bookPublisher}, #{bookPubdate}, #{bookDesc})
+	</insert>
+</mapper>

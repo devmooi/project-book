@@ -10,6 +10,7 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.ednadev.book.domain.Book;
 import com.ednadev.book.domain.BookUser;
 
 @SpringBootTest
@@ -21,7 +22,7 @@ class BackEndApplicationTests {
 		SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(r);
 		SqlSession session = factory.openSession();
 		
-		BookUser bookUser = new BookUser();
+//		BookUser bookUser = new BookUser();
 //		bookUser.setUserEmail("ednadev123@naver.com");
 //		bookUser.setUserName("김미경");
 //		bookUser.setUserImg("이미지가 들어가는 곳");
@@ -29,12 +30,19 @@ class BackEndApplicationTests {
 //		session.commit();
 //		System.out.println("회원가입");
 		
-		bookUser.setUserEmail("test01@naver.com");
+//		bookUser.setUserEmail("test01@naver.com");
 		//bookUser.setUserPass("1234");
 //		session.insert("UserMapper.insertUser", bookUser);
 //		session.commit();
-		BookUser user = session.selectOne("UserMapper.login", bookUser);
-		System.out.println(user);
+//		BookUser user = session.selectOne("UserMapper.login", bookUser);
+//		System.out.println(user);
+		
+		Book book = new Book();
+		book.setBookIsbn("ej23f2f");
+		book.setBookTitle("ajflk");
+		session.insert("BookMapper.insertBook", book);
+		session.commit();
+		System.out.println("책 추가");
 		
 		
 	}

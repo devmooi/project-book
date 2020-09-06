@@ -25,7 +25,7 @@ public class BookUserController {
 	private BookUserService service;
 	
 	@PostMapping("bookUser")
-	public ResponseEntity insertBookUser(@RequestBody BookUser bookUser, HttpSession session) throws Exception {
+	public ResponseEntity insertBookUser(@RequestBody BookUser bookUser) throws Exception {
 		
 		//패스워드 암호화
 		if(bookUser.getUserPass()!=null) {
@@ -34,12 +34,11 @@ public class BookUserController {
 		}
 		
 		service.insertBookUser(bookUser);
-		session.setAttribute("bookUser", bookUser);
-		return new ResponseEntity(session.getId(), HttpStatus.OK);
+		return new ResponseEntity(bookUser.getUserEmail(), HttpStatus.OK);
 	}
 	
 	@PostMapping("login")
-	public ResponseEntity login(@RequestBody BookUser bookUser, HttpSession session) throws Exception {
+	public ResponseEntity login(@RequestBody BookUser bookUser) throws Exception {
 		//패스워드 암호화
 		if(bookUser.getUserPass()!=null) {
 			AES256Util aes256 = new AES256Util("aes256-password-key");
@@ -48,8 +47,7 @@ public class BookUserController {
 		
 		BookUser user = service.login(bookUser);
 		if(user==null) return new ResponseEntity(HttpStatus.NO_CONTENT);
-		session.setAttribute("bookUser", user);
-		return new ResponseEntity(session.getId(), HttpStatus.OK);
+		return new ResponseEntity(bookUser.getUserEmail(), HttpStatus.OK);
 	}
 		
 }

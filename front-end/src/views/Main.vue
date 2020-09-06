@@ -12,6 +12,7 @@
                     <div id="search-result" v-for="book in books" v-bind:key="book">
                         <div id="search-result-image">
                             <img :src="book.image">
+                            <span @click.prevent="insertBook(book)">읽을 책 추가</span>
                         </div>
                         <div id="search-result-text">
                             <!-- book.isbn : book primary key -->
@@ -67,6 +68,25 @@ export default {
                 .catch(error => {
                     alert(error);
                 })
+        },
+        insertBook(book) {
+            axios
+                .post('http://localhost:7777/api/book', {
+                    bookIsbn: book.isbn,
+                    bookImg: book.image,
+                    bookTitle: book.title.replace(/(<([^>]+)>)/ig,""),
+                    bookAuthor: book.author.replace(/(<([^>]+)>)/ig,""),
+                    bookPublisher: book.publisher.replace(/(<([^>]+)>)/ig,""),
+                    bookPubdate: book.pubdate,
+                    bookDesc: book.description.replace(/(<([^>]+)>)/ig,"")
+                })
+                .then(response => {
+                    alert("읽을 책 추가");
+                })
+                .catch(error => {
+                    alert(error);
+                    console.log(error);
+                })
         }
     }
 }
@@ -110,9 +130,32 @@ export default {
         margin-top: 20px;
         display: flex;
     }
+    #search-result-image {
+        position: relative;
+        background: yellow;
+    }
+    #search-result-image:hover span {
+        display: flex;
+    }
     #search-result-image img {
+        width:110px;
         height: 100%;
-        width:90px;
+    }
+    #search-result-image span {
+        position: absolute;
+        top: 0;
+        left: 0;
+        background: black;
+        width: 100%;
+        height: 100%;
+        color: white;
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+        opacity: 0.7;
+        cursor: pointer;
+        display: none;
+        border: none;
     }
     #search-result-text {
         padding: 10px;
@@ -123,6 +166,8 @@ export default {
     }
     #search-result-text p {
         margin-bottom: 10px;
+        line-height: 1.8;
+        font-size: 0.9rem;
     }
     #sub {
         background: yellow;
