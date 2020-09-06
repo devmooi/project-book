@@ -22,4 +22,9 @@ public class BookUserServiceImpl implements BookUserService {
 		return dao.login(bookUser);
 	}
 
+	@Override
+	public BookUser selectBookUser(String email) throws Exception {
+		return dao.selectBookUser(email);
+	}
+
 }

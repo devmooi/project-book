@@ -15,7 +15,6 @@
                             <span @click.prevent="insertBook(book)">읽을 책 추가</span>
                         </div>
                         <div id="search-result-text">
-                            <!-- book.isbn : book primary key -->
                             <h2 v-html="book.title"></h2>
                             <p>
                                 <span v-html="book.author"></span> | 
@@ -28,8 +27,13 @@
                 </div>
             </div>
             <div id="sub">
-                <p>프로필 사진</p>
-                <p>이름</p>
+                <div id="profile">
+                    <i class="fas fa-user-circle" v-if="user.userImg==null"></i>
+                    <img :src="user.userImg" v-if="user.userImg!=null">
+                    <p v-html="user.userName"></p>
+                </div>
+
+                <div id=""></div>
             </div>
         </section>
     </div>
@@ -55,8 +59,16 @@ export default {
     data() {
         return {
             keyword:'',
-            books:[]
+            books:[],
+            user:[]
         }
+    },
+    mounted() {
+        axios
+            .get('http://localhost:7777/api/bookUser/' + token)
+            .then(response => {
+                this.user = response.data;
+            })
     },
     methods: {
         search() {
@@ -106,7 +118,6 @@ export default {
         padding-right: 30%;
     }
     #main {
-        /* background: pink; */
         padding: 20px;
     }
     #search-keyword i {
@@ -170,11 +181,27 @@ export default {
         font-size: 0.9rem;
     }
     #sub {
-        background: yellow;
         width: 30%;
         position: fixed;
         right: 0;
         top:0;
         height: 100vh;
+    }
+    #profile {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+    }
+    #profile i {
+        font-size: 120px;
+        color: #134775;
+        cursor: pointer;
+    }
+    #profile p {
+        margin-top: 20px;
+        font-size: 1.1rem;
+        font-weight: bold;
+        cursor: pointer;
     }
 </style>

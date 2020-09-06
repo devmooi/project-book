@@ -22,4 +22,9 @@ public class BookUserDAOImpl implements BookUserDAO {
 		return sqlSession.selectOne("UserMapper.login", bookUser);
 	}
 
+	@Override
+	public BookUser selectBookUser(String email) throws Exception {
+		return sqlSession.selectOne("UserMapper.selectUser", email);
+	}
+
 }

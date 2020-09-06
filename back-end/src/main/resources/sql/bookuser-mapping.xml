@@ -22,6 +22,11 @@
     	</if>
     </insert>
     
+    <select id="selectUser" parameterType="string" resultMap="bookUserRM">
+    	SELECT * FROM book_user
+    	WHERE user_email = #{value}
+    </select>
+    
     <select id="login" parameterType="bookUser" resultMap="bookUserRM">
     	SELECT * FROM book_user
     	<where>

@@ -37,12 +37,15 @@ class BackEndApplicationTests {
 //		BookUser user = session.selectOne("UserMapper.login", bookUser);
 //		System.out.println(user);
 		
-		Book book = new Book();
-		book.setBookIsbn("ej23f2f");
-		book.setBookTitle("ajflk");
-		session.insert("BookMapper.insertBook", book);
-		session.commit();
-		System.out.println("책 추가");
+//		Book book = new Book();
+//		book.setBookIsbn("ej23f2f");
+//		book.setBookTitle("ajflk");
+//		session.insert("BookMapper.insertBook", book);
+//		session.commit();
+//		System.out.println("책 추가");
+		
+		BookUser user = session.selectOne("UserMapper.selectUser", "ednadev1023@gmail.com");
+		System.out.println(user);
 		
 		
 	}
