@@ -30,7 +30,9 @@
                 <div id="profile">
                     <i class="fas fa-user-circle" v-if="user.userImg==null"></i>
                     <img :src="user.userImg" v-if="user.userImg!=null">
-                    <p v-html="user.userName"></p>
+                    <form @submit.prevent="updateUser(user.userName)">
+                         <input type="text" v-model="user.userName">
+                    </form>
                 </div>
 
                 <div id=""></div>
@@ -99,6 +101,16 @@ export default {
                     alert(error);
                     console.log(error);
                 })
+        },
+        updateUser(name) {
+            axios
+                .put('http://localhost:7777/api/bookUser', {
+                    userName: name,
+                    userEmail: token
+                })
+                .then(response => {
+                    location.href="/";
+                })
         }
     }
 }
@@ -134,7 +146,7 @@ export default {
         background: transparent;
         width: 59vw;
     }
-    #search-keyword input:focus {
+    input:focus {
         outline: none;
     }
     #search-result {
@@ -198,10 +210,12 @@ export default {
         color: #134775;
         cursor: pointer;
     }
-    #profile p {
-        margin-top: 20px;
+    #profile input {
         font-size: 1.1rem;
+        border: none;
         font-weight: bold;
-        cursor: pointer;
+        background: none;
+        text-align: center;
+        margin-top: 20px;
     }
 </style>

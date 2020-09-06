@@ -27,4 +27,9 @@ public class BookUserServiceImpl implements BookUserService {
 		return dao.selectBookUser(email);
 	}
 
+	@Override
+	public void updateBookUser(BookUser bookUser) throws Exception {
+		dao.updateBookUser(bookUser);
+	}
+
 }

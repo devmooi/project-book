@@ -27,6 +27,17 @@
     	WHERE user_email = #{value}
     </select>
     
+    <update id="updateUser" parameterType="bookUser">
+    	UPDATE book_user
+  		<if test="userName != null">
+  			SET user_name = #{userName}
+  		</if>
+  		<if test="userImg != null">
+  			SET user_img = #{userImg}
+  		</if>
+  		WHERE user_email=#{userEmail}
+    </update>
+    
     <select id="login" parameterType="bookUser" resultMap="bookUserRM">
     	SELECT * FROM book_user
     	<where>

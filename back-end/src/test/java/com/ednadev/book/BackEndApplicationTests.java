@@ -44,9 +44,15 @@ class BackEndApplicationTests {
 //		session.commit();
 //		System.out.println("책 추가");
 		
-		BookUser user = session.selectOne("UserMapper.selectUser", "ednadev1023@gmail.com");
-		System.out.println(user);
+//		BookUser user = session.selectOne("UserMapper.selectUser", "ednadev1023@gmail.com");
+//		System.out.println(user);
 		
+//		BookUser user = new BookUser();
+		//user.setUserName("kjalk");
+//		user.setUserEmail("ednadev1023@gmail.com");
+//		session.update("UserMapper.updateUser", user);
+//		session.commit();
+//		System.out.println("고객 수정");
 		
 	}
 

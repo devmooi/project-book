@@ -27,4 +27,9 @@ public class BookUserDAOImpl implements BookUserDAO {
 		return sqlSession.selectOne("UserMapper.selectUser", email);
 	}
 
+	@Override
+	public void updateBookUser(BookUser bookUser) throws Exception {
+		sqlSession.update("UserMapper.updateUser", bookUser);
+	}
+
 }
