@@ -1,14 +1,14 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Register from '../components/Register.vue';
+import Main from '../views/Main.vue';
 
 Vue.use(VueRouter);
 
 const routes = [
   {
-    path: "/register",
-    name: "Register",
-    component: Register
+    path: "/",
+    name: "Main",
+    component: Main
   }
 ];
 
