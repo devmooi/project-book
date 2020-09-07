@@ -57,7 +57,7 @@ class BackEndApplicationTests {
 //		session.commit();
 //		System.out.println("고객 수정");
 		
-		BookList bookList = new BookList();
+//		BookList bookList = new BookList();
 //		bookList.setBookIsbn("1160507627 9791160507621");
 //		bookList.setUserEmail("ednadev1023@gmail.com");
 //		session.insert("ListMapper.insertList", bookList);
@@ -70,11 +70,12 @@ class BackEndApplicationTests {
 //		BookList book = session.selectOne("ListMapper.selectCheck", bookList);
 //		System.out.println(book);
 		
-		bookList.setListCode(1);
-		bookList.setListDate("2020-09-30");
-		session.update("ListMapper.updateList", bookList);
+//		bookList.setListCode(1);
+//		bookList.setListDate("2020-09-30");
+//		session.update("ListMapper.updateList", bookList);
+		session.delete("ListMapper.deleteList", 4);
 		session.commit();
-		System.out.println("북리스트 수정");
+		System.out.println("북리스트 삭제");
 		
 	}
 

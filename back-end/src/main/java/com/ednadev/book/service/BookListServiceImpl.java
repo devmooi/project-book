@@ -33,4 +33,9 @@ public class BookListServiceImpl implements BookListService {
 	public void updateBookList(BookList bookList) throws Exception {
 		dao.updateBookList(bookList);
 	}
+
+	@Override
+	public void deleteBookList(int listCode) throws Exception {
+		dao.deleteBookList(listCode);
+	}
 }

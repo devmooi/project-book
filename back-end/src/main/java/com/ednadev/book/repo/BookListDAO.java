@@ -9,4 +9,5 @@ public interface BookListDAO {
 	List<BookList> selectBookList(String email) throws Exception;
 	BookList selectBook(BookList bookList) throws Exception;
 	void updateBookList(BookList bookList) throws Exception;
+	void deleteBookList(int listCode) throws Exception;
 }

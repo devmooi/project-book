@@ -34,4 +34,9 @@ public class BookListDAOImpl implements BookListDAO {
 		sqlSession.update("ListMapper.updateList", bookList);
 	}
 
+	@Override
+	public void deleteBookList(int listCode) throws Exception {
+		sqlSession.delete("ListMapper.deleteList", listCode);
+	}
+
 }

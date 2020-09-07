@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -43,6 +44,12 @@ public class BookListController {
 	@PutMapping("bookList")
 	public ResponseEntity updateBookList(@RequestBody BookList bookList) throws Exception {
 		service.updateBookList(bookList);
+		return new ResponseEntity(HttpStatus.OK);
+	}
+	
+	@DeleteMapping("bookList/{listCode}")
+	public ResponseEntity deleteBookList(@PathVariable int listCode) throws Exception {
+		service.deleteBookList(listCode);
 		return new ResponseEntity(HttpStatus.OK);
 	}
 }
