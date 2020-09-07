@@ -2,7 +2,7 @@
   <div>
       <Navigation></Navigation>
       <section>
-          <h2>읽을 책</h2>
+          <h2>읽을 책 리스트</h2>
           <div v-for="list in bookList" v-bind:key="list" id="book-list">
             <img :src="list.book.bookImg">
             <div>
@@ -15,7 +15,7 @@
                 <p v-html="list.book.bookDesc"></p>
             </div>
             <input type="date" v-model="list.listDate" @change="updateBookDate(list.listCode, $event)">
-            <button><i class="fas fa-trash"></i> 삭제</button>
+            <button @click="deleteBookData(list.listCode)"><i class="fas fa-trash"></i> 삭제</button>
           </div>
       </section>
   </div>
@@ -60,6 +60,13 @@ export default {
                 .then(response => {
                     location.reload(true);
                 })
+        },
+        deleteBookData(listCode) {
+            axios
+                .delete('http://localhost:7777/api/bookList/'+listCode)
+                .then(response => {
+                    location.reload(true);
+                })
         }
     }
 }
@@ -67,7 +74,7 @@ export default {
 
 <style scoped>
     section {
-        padding-right: 85px;
+        padding-left: 85px;
     }
     :focus {
         outline: none;
@@ -83,7 +90,6 @@ export default {
         padding: 10px;
         border-radius: 5px;
         box-shadow: 5px 5px 5px #f5e5a9;
-        width: 100%;
         align-items: center;
     }
     #book-list img {
@@ -100,7 +106,6 @@ export default {
     }
     #book-list input[type=date] {
         width: 260px;
-        /* background: pink; */
         border: none;
         font-size: 0.9rem;
         padding-left: 20px;
@@ -110,7 +115,6 @@ export default {
         width: 150px;
         cursor: pointer;
         border: none;
-        /* background: #f5e5a9; */
         border-radius: 5px;
         font-weight: bold;
         padding: 5px;

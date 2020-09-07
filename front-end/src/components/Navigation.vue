@@ -3,8 +3,7 @@
       <h1><a href="/">book</a></h1>
       <ul>
           <li><a href="/bookList"><i class="far fa-heart"></i></a></li>
-          <li><i class="far fa-star"></i></li>
-          <li><i class="far fa-calendar"></i></li>
+          <li><a href="/ideaNote"><i class="far fa-star"></i></a></li>
       </ul>
       <p><i class="fas fa-sign-out-alt" @click="logout"></i></p>
   </nav>

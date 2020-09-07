@@ -15,6 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.ednadev.book.domain.Book;
 import com.ednadev.book.domain.BookList;
 import com.ednadev.book.domain.BookUser;
+import com.ednadev.book.domain.ReadList;
 
 @SpringBootTest
 class BackEndApplicationTests {
@@ -73,9 +74,15 @@ class BackEndApplicationTests {
 //		bookList.setListCode(1);
 //		bookList.setListDate("2020-09-30");
 //		session.update("ListMapper.updateList", bookList);
-		session.delete("ListMapper.deleteList", 4);
+//		session.delete("ListMapper.deleteList", 4);
+//		session.commit();
+//		System.out.println("북리스트 삭제");
+		
+		ReadList readList = new ReadList();
+		readList.setBookIsbn("1160507627 9791160507621");
+		readList.setUserEmail("ednadev1023@gmail.com");
+		session.insert("ReadMapper.insertRead", readList);
 		session.commit();
-		System.out.println("북리스트 삭제");
 		
 	}
 

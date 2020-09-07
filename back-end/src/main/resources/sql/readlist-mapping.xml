@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="ReadMapper">
+	<resultMap type="readList" id="readListRM">
+		<result property="readCode" column="read_code"/>
+		<result property="readDate" column="read_date"/>
+		<result property="readCheck" column="read_check"/>
+		<result property="userEmail" column="user_email"/>
+		<result property="bookIsbn" column="book_isbn"/>
+		<association property="book" javaType="book">
+			<id property="bookIsbn" column="book_isbn"/>
+			<result property="bookImg" column="book_img"/>
+			<result property="bookTitle" column="book_title"/>
+			<result property="bookAuthor" column="book_author"/>
+			<result property="bookPublisher" column="book_publisher"/>
+			<result property="bookPubdate" column="book_pubdate"/>
+			<result property="bookDesc" column="book_desc"/>
+		</association>
+	</resultMap>
+	
+	<insert id="insertRead" parameterType="readList">
+		INSERT INTO read_list(user_email, book_isbn, read_date)
+		VALUES(#{userEmail}, #{bookIsbn}, CURDATE())
+	</insert>
+</mapper>

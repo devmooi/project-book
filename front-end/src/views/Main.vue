@@ -1,7 +1,7 @@
 <template>
     <div>
         <Navigation></Navigation>
-        <section>
+        <section id="main-container">
             <div id="main">
                 <div id="search-keyword">
                     <label><i class="fas fa-search"></i>
@@ -146,6 +146,16 @@ export default {
 </script>
 
 <style>
+    ::-webkit-scrollbar {
+        width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+        background-color: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+        border-radius: 3px;
+        background-color: #f5e5a9;
+    }
     * {
         margin: 0;
         padding: 0;
@@ -154,7 +164,7 @@ export default {
     body {
         background: #f4f2db;
     }
-    section {
+    #main-container {
         padding-left: 85px;
         padding-right: 30%;
     }
@@ -184,7 +194,6 @@ export default {
     }
     #search-result-image {
         position: relative;
-        background: yellow;
     }
     #search-result-image:hover span {
         display: flex;
