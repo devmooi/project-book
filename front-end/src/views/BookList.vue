@@ -91,7 +91,6 @@ export default {
         /* background: pink; */
         border: none;
         font-size: 0.9rem;
-        cursor: pointer;
         padding-left: 20px;
         padding-right: 20px;
     }

@@ -26,6 +26,8 @@ public class BookListController {
 	
 	@PostMapping("bookList")
 	public ResponseEntity insertBookList(@RequestBody BookList bookList) throws Exception {
+		BookList book = service.selectBook(bookList);
+		if(book!=null) return new ResponseEntity(HttpStatus.NO_CONTENT);
 		service.insertBookList(bookList);
 		return new ResponseEntity(HttpStatus.OK);
 	}

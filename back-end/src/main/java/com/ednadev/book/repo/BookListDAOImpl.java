@@ -18,10 +18,15 @@ public class BookListDAOImpl implements BookListDAO {
 	public void insertBookList(BookList bookList) throws Exception {
 		sqlSession.insert("ListMapper.insertList", bookList);
 	}
-
+	
 	@Override
 	public List<BookList> selectBookList(String email) throws Exception {
 		return sqlSession.selectList("ListMapper.selectList", email);
+	}
+	
+	@Override
+	public BookList selectBook(BookList bookList) throws Exception {
+		return sqlSession.selectOne("ListMapper.selectCheck", bookList);
 	}
 
 }

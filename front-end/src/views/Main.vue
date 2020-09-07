@@ -104,7 +104,11 @@ export default {
                     userEmail: token
                 })
                 .then(response => {
-                    alert("읽을 책 추가");
+                    if(response.status==200) {
+                        alert("읽을 책 추가");
+                    } else {
+                        alert("이미 추가된 책입니다");
+                    }
                 })
         },
         updateUser(name) {

@@ -23,4 +23,9 @@ public class BookListServiceImpl implements BookListService {
 	public List<BookList> selectBookList(String email) throws Exception {
 		return dao.selectBookList(email);
 	}
+
+	@Override
+	public BookList selectBook(BookList bookList) throws Exception {
+		return dao.selectBook(bookList);
+	}
 }

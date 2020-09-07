@@ -57,15 +57,18 @@ class BackEndApplicationTests {
 //		session.commit();
 //		System.out.println("고객 수정");
 		
-//		BookList bookList = new BookList();
-//		bookList.setBookIsbn("1160507627 9791160507621");
-//		bookList.setUserEmail("ednadev1023@gmail.com");
+		BookList bookList = new BookList();
+		bookList.setBookIsbn("1160507627 9791160507621");
+		bookList.setUserEmail("ednadev1023@gmail.com");
 //		session.insert("ListMapper.insertList", bookList);
 //		session.commit();
 //		System.out.println("북리스트 추가");
 		
-		List<BookList> list = session.selectList("ListMapper.selectList", "ednadev1023@gmail.com");
-		for(BookList book : list) System.out.println(book);
+//		List<BookList> list = session.selectList("ListMapper.selectList", "ednadev1023@gmail.com");
+//		for(BookList book : list) System.out.println(book);
+		
+		BookList book = session.selectOne("ListMapper.selectCheck", bookList);
+		System.out.println(book);
 		
 	}
 

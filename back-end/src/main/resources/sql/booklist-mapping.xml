@@ -24,16 +24,16 @@
 		VALUES(#{userEmail}, #{bookIsbn})
 	</insert>
 	
-	<select id="selectCheck" parameterType="bookList" resultMap="bookListRM">
-		SELECT * FROM book_list
-		WHERE user_email=#{userEmail} 
-		AND book_isbn=#{book_isbn}
-	</select>
-	
 	<select id="selectList" parameterType="string" resultMap="bookListRM">
 		SELECT *
 		FROM book_list l
 		JOIN book b USING(book_isbn)
 		WHERE user_email=#{value};
+	</select>
+	
+	<select id="selectCheck" parameterType="bookList" resultMap="bookListRM">
+		SELECT * FROM book_list
+		WHERE user_email=#{userEmail} 
+		AND book_isbn=#{bookIsbn}
 	</select>
 </mapper>
