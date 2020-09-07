@@ -30,7 +30,7 @@
                 <div id="profile">
                     <label for="file">
                         <i class="fas fa-user-circle" v-if="user.userImg==null"></i>
-                        <img :src="getImgUrl(user.userImg)" v-bind:alt="user.userImg">
+                        <img :src="getImgUrl(user.userImg)" v-bind:alt="user.userImg" v-if="user.userImg!=null">
                     </label>
                     <input id="file" type="file" @change="updateUserImg" enctype="multipart/form-data" accept=".gif, .jpg, .png">
                     <form @submit.prevent="updateUser(user.userName)">
@@ -98,12 +98,13 @@ export default {
                     bookPubdate: book.pubdate,
                     bookDesc: book.description.replace(/(<([^>]+)>)/ig,"")
                 })
+            axios
+                .post('http://localhost:7777/api/bookList', {
+                    bookIsbn: book.isbn,
+                    userEmail: token
+                })
                 .then(response => {
                     alert("읽을 책 추가");
-                })
-                .catch(error => {
-                    alert(error);
-                    console.log(error);
                 })
         },
         updateUser(name) {

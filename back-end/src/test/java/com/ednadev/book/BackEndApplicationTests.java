@@ -2,6 +2,8 @@ package com.ednadev.book;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
@@ -11,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.ednadev.book.domain.Book;
+import com.ednadev.book.domain.BookList;
 import com.ednadev.book.domain.BookUser;
 
 @SpringBootTest
@@ -53,6 +56,16 @@ class BackEndApplicationTests {
 //		session.update("UserMapper.updateUser", user);
 //		session.commit();
 //		System.out.println("고객 수정");
+		
+//		BookList bookList = new BookList();
+//		bookList.setBookIsbn("1160507627 9791160507621");
+//		bookList.setUserEmail("ednadev1023@gmail.com");
+//		session.insert("ListMapper.insertList", bookList);
+//		session.commit();
+//		System.out.println("북리스트 추가");
+		
+		List<BookList> list = session.selectList("ListMapper.selectList", "ednadev1023@gmail.com");
+		for(BookList book : list) System.out.println(book);
 		
 	}
 

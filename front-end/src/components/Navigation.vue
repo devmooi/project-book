@@ -2,17 +2,23 @@
   <nav>
       <h1><a href="/">book</a></h1>
       <ul>
+          <li><a href="/bookList"><i class="far fa-heart"></i></a></li>
           <li><i class="far fa-star"></i></li>
-          <li><i class="far fa-heart"></i></li>
           <li><i class="far fa-calendar"></i></li>
       </ul>
-      <p><i class="fas fa-sign-out-alt"></i></p>
+      <p><i class="fas fa-sign-out-alt" @click="logout"></i></p>
   </nav>
 </template>
 
 <script>
 export default {
-
+    name: 'Navigation',
+    methods: {
+        logout() {
+            localStorage.removeItem('bookToken');
+            location.href="/login.html";
+        }
+    }
 }
 </script>
 
@@ -27,13 +33,14 @@ export default {
         justify-content: space-between;
     }
     h1 a {
-        color: #f4f2db;
         text-decoration: none;
         font-size: 1.5rem;
         padding: 15px;
         display: block;
     }
-
+    a {
+        color: #f4f2db;
+    }
     ul {
         list-style: none;
         text-align: center;
@@ -48,5 +55,14 @@ export default {
         text-align: center;
         padding: 20px;
         cursor: pointer;
+    }
+    i {
+        padding: 5px;
+        transition: 0.5s;
+        border-radius: 5px;
+    }
+    i:hover {
+        background: #f2f2db;
+        color:#134775;
     }
 </style>
