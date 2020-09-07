@@ -28,8 +28,11 @@
             </div>
             <div id="sub">
                 <div id="profile">
-                    <i class="fas fa-user-circle" v-if="user.userImg==null"></i>
-                    <img :src="user.userImg" v-if="user.userImg!=null">
+                    <label for="file">
+                        <i class="fas fa-user-circle" v-if="user.userImg==null"></i>
+                        <img :src="getImgUrl(user.userImg)" v-bind:alt="user.userImg">
+                    </label>
+                    <input id="file" type="file" @change="updateUserImg" enctype="multipart/form-data" accept=".gif, .jpg, .png">
                     <form @submit.prevent="updateUser(user.userName)">
                          <input type="text" v-model="user.userName">
                     </form>
@@ -62,7 +65,8 @@ export default {
         return {
             keyword:'',
             books:[],
-            user:[]
+            user:[],
+            files:''
         }
     },
     mounted() {
@@ -111,6 +115,26 @@ export default {
                 .then(response => {
                     location.href="/";
                 })
+        },
+        updateUserImg(event) {
+            const formData = new FormData();
+            formData.append('uploadFile', event.target.files[0]);
+            formData.append('userEmail', token);
+
+            for(let key of formData.entries()){
+                console.log(`${key}`);
+            }
+            
+            axios
+                .patch('http://localhost:7777/api/bookUser', formData, {
+                    headers: {
+                        'Content-Type' : 'multipart/form-data'
+                    }
+                })
+        },
+        getImgUrl(profile_image) {
+            var images = require.context('../assets/upload/', false, /\.(png|jpe?g|svg)$/)
+            return images('./' + profile_image)
         }
     }
 }
@@ -204,18 +228,27 @@ export default {
         flex-direction: column;
         align-items: center;
         padding: 20px;
+        display: relative;
     }
     #profile i {
         font-size: 120px;
         color: #134775;
         cursor: pointer;
     }
-    #profile input {
+    #profile input[type=text] {
         font-size: 1.1rem;
         border: none;
         font-weight: bold;
         background: none;
         text-align: center;
         margin-top: 20px;
+    }
+    #profile input[type=file] {
+        display: none;
+    }
+    #profile img {
+        width: 120px;
+        border-radius: 50%;
+        height: 120px;
     }
 </style>
