@@ -20,15 +20,16 @@
 	</resultMap>
 	
 	<insert id="insertList" parameterType="bookList">
-		INSERT INTO book_list(user_email, book_isbn)
-		VALUES(#{userEmail}, #{bookIsbn})
+		INSERT INTO book_list(user_email, book_isbn, list_date)
+		VALUES(#{userEmail}, #{bookIsbn}, CURDATE())
 	</insert>
 	
 	<select id="selectList" parameterType="string" resultMap="bookListRM">
 		SELECT *
 		FROM book_list l
 		JOIN book b USING(book_isbn)
-		WHERE user_email=#{value};
+		WHERE user_email=#{value}
+		ORDER BY list_date;
 	</select>
 	
 	<select id="selectCheck" parameterType="bookList" resultMap="bookListRM">
@@ -36,4 +37,15 @@
 		WHERE user_email=#{userEmail} 
 		AND book_isbn=#{bookIsbn}
 	</select>
+	
+	<update id="updateList" parameterType="bookList">
+		UPDATE book_list
+		SET list_date=#{listDate}
+		WHERE list_code=#{listCode}
+	</update>
+	
+	<delete id="deleteList" parameterType="int">
+		DELETE FROM book_list
+		WHERE list_code=#{value}
+	</delete>
 </mapper>

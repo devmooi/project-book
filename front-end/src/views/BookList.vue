@@ -14,7 +14,7 @@
                 </p>
                 <p v-html="list.book.bookDesc"></p>
             </div>
-            <input type="date" id="date" :value="list.listDate">
+            <input type="date" v-model="list.listDate" @change="updateBookDate(list.listCode, $event)">
             <button><i class="fas fa-trash"></i> 삭제</button>
           </div>
       </section>
@@ -49,6 +49,18 @@ export default {
             .then(response => {
                 this.bookList = response.data;
             })
+    },
+    methods: {
+        updateBookDate(listCode, event) {
+            axios
+                .put('http://localhost:7777/api/bookList', {
+                    listCode: listCode,
+                    listDate: event.target.value
+                })
+                .then(response => {
+                    location.reload(true);
+                })
+        }
     }
 }
 </script>

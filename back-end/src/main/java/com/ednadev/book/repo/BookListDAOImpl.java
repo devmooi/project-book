@@ -29,4 +29,9 @@ public class BookListDAOImpl implements BookListDAO {
 		return sqlSession.selectOne("ListMapper.selectCheck", bookList);
 	}
 
+	@Override
+	public void updateBookList(BookList bookList) throws Exception {
+		sqlSession.update("ListMapper.updateList", bookList);
+	}
+
 }

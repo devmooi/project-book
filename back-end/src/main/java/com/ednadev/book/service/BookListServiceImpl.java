@@ -28,4 +28,9 @@ public class BookListServiceImpl implements BookListService {
 	public BookList selectBook(BookList bookList) throws Exception {
 		return dao.selectBook(bookList);
 	}
+
+	@Override
+	public void updateBookList(BookList bookList) throws Exception {
+		dao.updateBookList(bookList);
+	}
 }
