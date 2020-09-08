@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
+    <style>
+    	*{
+            margin: 0;
+            font-family: 'Nanum Gothic', sans-serif;
+        }
+    	#container {
+        	display: flex;
+            height: 100vh;
+	    }
+	    section {
+	        width: 30%;
+	        background: #134775;
+            color: #f4f2db;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+	    }
+        section h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+        section p {
+            margin-bottom: 30px;
+        }
+        section a {
+            text-decoration: none;
+            padding: 15px 60px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            background: transparent;
+            border: 1px solid #f4f2db;
+            border-radius: 30px;
+            color: #f4f2db;
+            cursor: pointer;
+        }
+	    form {
+            display: flex;
+	        width: 70%;
+	        background: #f4f2db;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color:#134775;
+	    }
+        form h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+        form div {
+            margin-bottom: 15px;
+        }
+	    form #naver_id_login {
+	    	display: inline-block;
+	    }
+        form #naver_id_login img {
+            width: 100px;
+            height: 40px;
+        }
+        form #kakao-login-btn img {
+            width: 100px;
+            height: 40px;
+        }
+        form p:nth-child(3) {
+            margin-bottom: 15px;
+        }
+        form p:nth-child(3) ~ p input {
+            padding: 10px;
+            width: 350px;
+            margin-bottom: 10px;
+            border: none;
+            background: #f5e5a9;
+        }
+        form button {
+            margin-top: 15px;
+            border: none;
+            background: #134775;
+            color: #f4f2db;
+            font-size: 1.1rem;
+            padding: 15px 60px;
+            font-weight: bold;
+            border-radius: 30px;
+            cursor: pointer;
+        }
+        section a {
+            text-decoration: none;
+            padding: 15px 60px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            background: transparent;
+            border: 1px solid #f4f2db;
+            border-radius: 30px;
+            color: #f4f2db;
+            cursor: pointer;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
+    <script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js" charset="utf-8"></script>
+    <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+</head>
+<body>
+    <div id="container">
+        <form @submit.prevent="login">
+            <h2>로그인</h2>
+            <div>
+            	<div id="naver_id_login"></div>
+            	<a id="kakao-login-btn"></a>
+            </div>
+            <p>또는</p>
+            <p><label><input type="email" placeholder="이메일" required v-model="email"></label></p>
+            <p><label><input type="password" placeholder="비밀번호" required v-model="password"></label></p>
+            <button>로그인</button>
+        </form>          
+        <section>
+            <h2>환영합니다!</h2>
+            <p>첫 방문이라면 회원가입부터 해주세요.</p>
+            <a href="register.html">회원가입</a>
+        </section>
+
+    </div>
+    
+    <script>
+        function getToken() {
+            return localStorage.getItem('bookToken');
+        }
+        const token = getToken();
+        if(token!==null) {
+            location.assign('/');
+        }
+	    var app = new Vue({
+	        el: '#container',
+	        data() {
+	            return {
+	                email:'',
+	                password:''
+	            }
+	        },
+	        methods: {
+	            login() {
+	                axios
+	                    .post('http://localhost:7777/api/login', {
+	                        userEmail: this.email,
+	                        userPass: this.password
+	                    })
+	                    .then(response => {
+                            const token = response.data;
+                            if(token === "") {
+                                alert("가입하지 않은 아이디이거나 잘못된 비밀번호입니다");
+                                this.email = '';
+                                this.password = '';
+                                const email = document.querySelector('[type=email]');
+                                email.focus();
+                                return;
+                            }
+                            localStorage.setItem('bookToken', token);
+                            location="/";
+	                    })
+	                    .catch(error => {
+                            console.log(error);
+	                    })
+	            }
+	        }
+	    })
+	    
+	    // 네이버
+	    var naver_id_login = new naver_id_login("rhm8t7x8h2VCZJK_g7iT", "http://127.0.0.1:7777/callback.html");
+        var state = naver_id_login.getUniqState();
+        naver_id_login.setButton("green", 2, 40);
+        naver_id_login.setDomain("http://127.0.0.1:7777");
+        naver_id_login.setState(state);
+        naver_id_login.init_naver_id_login();
+
+        // 카카오
+        Kakao.init('55f727febd8ca480e11cb0c8e0acb51f');
+
+        let email = '';
+
+        Kakao.Auth.createLoginButton({
+            container: '#kakao-login-btn',
+            size: 'small',
+            success: function(authObj) {
+            Kakao.API.request({
+                url: '/v2/user/me',
+                success: function(res) {
+                    const name = JSON.stringify(res.kakao_account.profile.nickname).replace(/^"(.+)"$/,'$1');
+                    email = JSON.stringify(res.kakao_account.email).replace(/^"(.+)"$/,'$1');
+
+                    axios
+	                    .post('http://localhost:7777/api/bookUser', {
+	                        userName: name,
+	                        userEmail: email,
+	                    })
+	                    .then(response => {
+	                        localStorage.setItem('bookToken', response.data);
+                            location="/";
+	                    })
+	                    .catch(error => {
+	                        axios
+                                .post('http://localhost:7777/api/login', {
+                                    userEmail: email
+                                })
+                                .then(response => {
+                                    localStorage.setItem('bookToken', response.data);
+                                    location="/";
+                                })
+	                    })  
+                },
+                fail: function(error) {
+                console.log(
+                    'login success, but failed to request user information: ' +
+                    JSON.stringify(error)
+                )
+                },
+            })
+            },
+            fail: function(err) {
+            alert('failed to login: ' + JSON.stringify(err))
+            },
+        })
+	</script>
+</body>
+</html>

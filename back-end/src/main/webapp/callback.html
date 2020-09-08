@@ -27,8 +27,7 @@
     try {
         const response = await axios.post('http://localhost:7777/api/bookUser', {
             userName: name,
-            userEmail: email,
-            userImg: profile_image
+            userEmail: email
         });
         localStorage.setItem('bookToken', response.data);
         location="/";

@@ -15,12 +15,14 @@ const routes = [
   {
     path: "/bookList",
     name: "BookList",
-    component: BookList
+    component: BookList,
+    props: true
   },
   {
     path: "/ideaNote",
     name: "IdeaNote",
-    component: IdeaNote
+    component: IdeaNote,
+    props: true
   }
 ];
 
