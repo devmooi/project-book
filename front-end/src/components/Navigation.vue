@@ -49,7 +49,6 @@ export default {
         font-size: 1.1rem;
         cursor: pointer;
     }
-
     p {
         text-align: center;
         padding: 20px;
