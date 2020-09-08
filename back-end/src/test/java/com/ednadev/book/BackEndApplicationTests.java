@@ -78,16 +78,16 @@ class BackEndApplicationTests {
 //		session.commit();
 //		System.out.println("북리스트 삭제");
 		
-		ReadList readList = new ReadList();
-		readList.setBookIsbn("1160507627 9791160507621");
-		readList.setUserEmail("ednadev1023@gmail.com");
+//		ReadList readList = new ReadList();
+//		readList.setBookIsbn("1160507627 9791160507621");
+//		readList.setUserEmail("ednadev1023@gmail.com");
 //		session.insert("ReadMapper.insertRead", readList);
 //		session.commit();
 //		
 //		List<ReadList> list = session.selectList("ReadMapper.selectRead", "ednadev1023@gmail.com");
 //		for(ReadList read : list) System.out.println(read);
 		
-		ReadList readDetail = session.selectOne("ReadMapper.selectDetail", readList);
+		ReadList readDetail = session.selectOne("ReadMapper.selectDetail", 8);
 		System.out.println(readDetail);
 		
 	}

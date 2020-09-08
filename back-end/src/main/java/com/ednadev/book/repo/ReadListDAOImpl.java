@@ -40,8 +40,8 @@ public class ReadListDAOImpl implements ReadListDAO {
 	}
 
 	@Override
-	public ReadList selectDetail(ReadList readList) throws Exception {
-		return sqlSession.selectOne("ReadMapper.selectDetail", readList);
+	public ReadList selectDetail(int readCode) throws Exception {
+		return sqlSession.selectOne("ReadMapper.selectDetail", readCode);
 	}
 
 }

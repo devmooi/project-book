@@ -19,7 +19,7 @@
                   </div>
               </div>
               <div v-for="list in readList" v-bind:key="list" >      
-                  <div v-if="list.readCheck!='완료'" id="read-list" @click="selectReadList">
+                  <div v-if="list.readCheck!='완료'" id="read-list" @click="selectReadDetail(list.readCode)">
                       <h3 v-html="list.book.bookTitle"></h3>
                       <p>
                           <span v-html="list.readDate"></span>
@@ -28,7 +28,7 @@
                       </p>
                   </div>            
               </div>
-              <div v-for="list in readList" v-bind:key="list" @click="selectReadList">
+              <div v-for="list in readList" v-bind:key="list" @click="selectReadDetail(list.readCode)">
                   <div v-if="list.readCheck=='완료'" id="read-list" class="complete">
                       <h3 v-html="list.book.bookTitle"></h3>
                       <p>
@@ -39,17 +39,35 @@
                   </div>               
               </div>
           </div>
-          <div id="idea-detail">
-              <div>
-                  <h4>책 제목 : </h4>
-                  <p>저자 : </p>
-                  <p>출판사 : </p>
+          <div id="idea-detail" v-if="note!=''">
+              <h4>책 제목 : {{note.book.bookTitle}}</h4>
+              <p>출판사 : {{note.book.bookPublisher}}</p>
+              <p>저자 : {{note.book.bookAuthor}}</p>
+              <h5>본 것 (What I See)</h5>
+              <div id="read-note" v-for="read in readNote" v-bind:key="read">
+                  <p>
+                      <input type="text" placeholder="위치.." @keyup.enter="insertReadNote(note.readCode, $event)" v-model="read.notePage">
+                      <button @click="deleteReadNote(read.noteCode)">삭제</button>
+                  </p>
+                  <resizable-textarea>
+                      <textarea id="read-note-desc" placeholder="내용을 입력해주세요.." @keyup="updateReadNote(read.noteCode, $event)" v-model="read.noteDesc"></textarea>
+                  </resizable-textarea>
               </div>
-              <div>
-                  <h4>본 것 (What I See)</h4>
+              <div id="read-note">
+                  <p>
+                      <input type="text" placeholder="위치.." @keyup.enter="insertReadNote(note.readCode, $event)">
+                  </p>
+                  <resizable-textarea>
+                      <textarea id="read-note-desc" placeholder="내용을 입력해주세요.."></textarea>
+                  </resizable-textarea>
               </div>
-              <div>
-                  <h4>적용할 것 (What I Apply)</h4>
+              <h5>적용할 것 (What I Apply)</h5>
+              <div id="idea-note">
+                  <input type="checkbox">
+                  <resizable-textarea>
+                      <textarea></textarea>
+                  </resizable-textarea>
+                  <i class="fas fa-times"></i>
               </div>
           </div>
       </section>
@@ -57,8 +75,13 @@
 </template>
 
 <script>
+import Vue from "vue";
 import axios from "axios";
 import Navigation from "@/components/Navigation";
+import ResizableTextarea from '../assets/ResizableTextarea.js';
+import VueInputAutowidth from 'vue-input-autowidth';
+
+Vue.use(VueInputAutowidth);
 
 function getToken() {
     return localStorage.getItem('bookToken');
@@ -71,12 +94,15 @@ if(token === null) {
 export default {
     name: 'IdeaNote',
     components: {
-        Navigation
+        Navigation,
+        ResizableTextarea
     },
     data() {
         return {
             bookList:[],
-            readList:[]
+            readList:[],
+            note:[],
+            readNote:[]
         }
     },
     mounted() {
@@ -141,8 +167,41 @@ export default {
                     location.reload(true);
                 })
         },
-        selectReadList() {
-            alert('안녕 ~~ 드디어 세부 설정으로 들어가니? 오전에 끝내자!');
+        selectReadDetail(readCode) {
+            axios
+                .get('http://localhost:7777/api/readDetail/'+readCode)
+                .then(response => {
+                    this.note = response.data;
+                });
+            axios
+                .get('http://localhost:7777/api/readNote/' + readCode)
+                .then(response => {
+                    this.readNote = response.data;
+                });
+        },
+        insertReadNote(readCode, event) {
+            axios
+                .post('http://localhost:7777/api/readNote', {
+                    notePage:event.target.value,
+                    readCode:readCode
+                })
+                .then(response => {
+                    location.reload(true);
+                })
+        },
+        updateReadNote(noteCode, event) {
+            axios
+                .put('http://localhost:7777/api/readNote', {
+                    noteDesc:event.target.value,
+                    noteCode:noteCode
+                })
+        },
+        deleteReadNote(noteCode) {
+            axios
+                .delete('http://localhost:7777/api/readNote/' + noteCode)
+                .then(response => {
+                    location.reload(true);
+                })
         }
     }
 }
@@ -163,6 +222,9 @@ export default {
     }
     p {
         font-size: 0.9rem;
+    }
+    :focus {
+        outline: none;
     }
 
     #idea-list {
@@ -246,5 +308,60 @@ export default {
     #idea-detail {
         margin-left: 32%;
         background: white;
+        width: 64vw;
+    }
+    #idea-detail h4 {
+        font-size: 1.2rem;
+        padding-top: 30px;
+        padding-left: 15px;
+    }
+    #idea-detail > p {
+        font-size: 0.9rem;
+        float: right;
+        padding-top: 10px;
+        padding-right: 15px;
+    }
+    #idea-detail h5 {
+        font-size: 1.1rem;
+        clear: both;
+        margin-top: 50px;
+        margin-left: 15px;
+    }
+
+    #read-note {
+        display: flex;
+        font-size: 0.9rem;
+    }
+    #read-note p {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    #read-note p * {
+        margin: 15px;
+        line-height: 1.5;
+        padding: 3px;
+    }
+    #read-note p button {
+        border: none;
+        background: none;
+        cursor: pointer;
+    }
+    #read-note p button:hover {
+        color: tomato;
+    }
+    #read-note p input {
+        border: none;
+        font-weight: bold;
+        resize: none;
+        width: 120px;
+    }
+    #read-note > textarea {
+        margin: 15px 15px 15px 0;
+        width: 100%;
+        resize: none;
+        border: none;
+        padding: 3px;
+        line-height: 1.5;
     }
 </style>

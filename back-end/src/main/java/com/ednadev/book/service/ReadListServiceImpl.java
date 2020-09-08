@@ -40,8 +40,8 @@ public class ReadListServiceImpl implements ReadListService {
 	}
 
 	@Override
-	public ReadList selectDetail(ReadList readList) throws Exception {
-		return dao.selectDetail(readList);
+	public ReadList selectDetail(int readCode) throws Exception {
+		return dao.selectDetail(readCode);
 	}
 
 }

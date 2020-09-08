@@ -10,5 +10,5 @@ public interface ReadListDAO {
 	ReadList selectBook(ReadList readList) throws Exception;
 	void updateReadList(ReadList readList) throws Exception;
 	void deleteReadList(int readCode) throws Exception;
-	ReadList selectDetail(ReadList readList) throws Exception;
+	ReadList selectDetail(int readCode) throws Exception;
 }

@@ -52,4 +52,11 @@ public class ReadListController {
 		service.deleteReadList(readCode);
 		return new ResponseEntity(HttpStatus.OK);
 	}
+	
+	@GetMapping("readDetail/{readCode}")
+	public ResponseEntity selectReadDetail(@PathVariable int readCode) throws Exception {
+		ReadList readList = service.selectDetail(readCode);
+		if(readList==null) return new ResponseEntity(HttpStatus.NO_CONTENT);
+		return new ResponseEntity(readList, HttpStatus.OK);
+	}
 }

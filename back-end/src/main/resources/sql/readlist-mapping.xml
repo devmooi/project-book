@@ -82,11 +82,10 @@
 		WHERE read_code=#{value}
 	</delete>
 	
-	<select id="selectDetail" parameterType="readList" resultMap="readListRM">
+	<select id="selectDetail" parameterType="int" resultMap="readListRM">
 		SELECT *
 		FROM read_list r
 		JOIN book b USING(book_isbn)
-		WHERE user_email=#{userEmail}
-		AND book_isbn=#{bookIsbn}
+		WHERE read_code=#{value}
 	</select>
 </mapper>

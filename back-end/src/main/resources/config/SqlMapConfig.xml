@@ -26,5 +26,6 @@
     	<mapper resource="sql/book-mapping.xml"/>
     	<mapper resource="sql/booklist-mapping.xml"/>
     	<mapper resource="sql/readlist-mapping.xml"/>
+    	<mapper resource="sql/readNote-mapping.xml"/>
     </mappers>
 </configuration>
