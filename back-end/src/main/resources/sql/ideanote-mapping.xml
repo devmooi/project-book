@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="IdeaMapper">
+	<resultMap type="ideaNote" id="ideaNoteRM">
+		<result property="ideaCode" column="idea_code"/>
+		<result property="ideaCheck" column="idea_check"/>
+		<result property="ideaDesc" column="idea_desc"/>
+		<result property="readCode" column="read_code"/>
+	</resultMap>
+	
+	<insert id="insertIdea" parameterType="ideaNote">
+		INSERT INTO idea_note(idea_desc, read_code)
+		VALUES(#{ideaDesc}, #{readCode})
+	</insert>
+	
+	<select id="selectIdea" parameterType="int" resultMap="ideaNoteRM">
+		SELECT * FROM idea_note
+		WHERE read_code=#{value}
+	</select>
+	
+	<update id="updateIdea" parameterType="ideaNote">
+		UPDATE idea_note
+		SET idea_desc=#{ideaDesc}
+		WHERE idea_code=#{ideaCode}
+	</update>
+	
+	<delete id="deleteIdea" parameterType="int">
+		DELETE FROM idea_note
+		WHERE idea_code=#{value}
+	</delete>
+</mapper>

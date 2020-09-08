@@ -46,7 +46,7 @@
               <h5>본 것 (What I See)</h5>
               <div id="read-note" v-for="read in readNote" v-bind:key="read">
                   <p>
-                      <input type="text" placeholder="위치.." @keyup.enter="insertReadNote(note.readCode, $event)" v-model="read.notePage">
+                      <input type="text" placeholder="위치.." @keyup.enter="updateReadPage(read.noteCode, $event)" v-model="read.notePage">
                       <button @click="deleteReadNote(read.noteCode)">삭제</button>
                   </p>
                   <resizable-textarea>
@@ -58,14 +58,23 @@
                       <input type="text" placeholder="위치.." @keyup.enter="insertReadNote(note.readCode, $event)">
                   </p>
                   <resizable-textarea>
-                      <textarea id="read-note-desc" placeholder="내용을 입력해주세요.."></textarea>
+                      <textarea id="read-note-desc" placeholder="내용을 입력해주세요.." class="note-height"></textarea>
                   </resizable-textarea>
               </div>
               <h5>적용할 것 (What I Apply)</h5>
-              <div id="idea-note">
-                  <input type="checkbox">
+              <div id="idea-note" v-for="idea in ideaNote" v-bind:key="idea">
+                  <input type="checkbox" id="idea-check">
+                  <label for="idea-check"></label>
                   <resizable-textarea>
-                      <textarea></textarea>
+                      <textarea placeholder="할일을 입력해주세요.." v-model="idea.ideaDesc" @keyup.enter="updateIdeaNote(idea.ideaCode, $event)"></textarea>
+                  </resizable-textarea>
+                  <i class="fas fa-times" @click="deleteIdeaNote(idea.ideaCode)"></i>
+              </div>
+              <div id="idea-note">
+                  <input type="checkbox" id="idea-check">
+                  <label for="idea-check"></label>
+                  <resizable-textarea>
+                      <textarea placeholder="할일을 입력해주세요.." class="note-height" @keyup.enter="insertIdeaNote(note.readCode, $event)"></textarea>
                   </resizable-textarea>
                   <i class="fas fa-times"></i>
               </div>
@@ -102,7 +111,8 @@ export default {
             bookList:[],
             readList:[],
             note:[],
-            readNote:[]
+            readNote:[],
+            ideaNote:[]
         }
     },
     mounted() {
@@ -178,6 +188,11 @@ export default {
                 .then(response => {
                     this.readNote = response.data;
                 });
+            axios
+                .get('http://localhost:7777/api/ideaNote/' + readCode)
+                .then(response => {
+                    this.ideaNote = response.data;
+                });
         },
         insertReadNote(readCode, event) {
             axios
@@ -187,6 +202,13 @@ export default {
                 })
                 .then(response => {
                     location.reload(true);
+                })
+        },
+        updateReadPage(noteCode, event) {
+            axios
+                .put('http://localhost:7777/api/readNote', {
+                    notePage:event.target.value,
+                    noteCode:noteCode
                 })
         },
         updateReadNote(noteCode, event) {
@@ -202,6 +224,30 @@ export default {
                 .then(response => {
                     location.reload(true);
                 })
+        },
+        insertIdeaNote(readCode, event) {
+            axios
+                .post('http://localhost:7777/api/ideaNote', {
+                    ideaDesc:event.target.value,
+                    readCode:readCode
+                })
+                .then(response => {
+                    location.reload(true);
+                })
+        },
+        updateIdeaNote(ideaCode, event) {
+            axios
+                .put('http://localhost:7777/api/ideaNote', {
+                    ideaDesc:event.target.value,
+                    ideaCode:ideaCode
+                });          
+        },
+        deleteIdeaNote(ideaCode) {
+            axios
+                .delete('http://localhost:7777/api/ideaNote/' + ideaCode)
+                .then(response => {
+                    location.reload(true);
+                })            
         }
     }
 }
@@ -363,5 +409,43 @@ export default {
         border: none;
         padding: 3px;
         line-height: 1.5;
+    }
+
+    #idea-note {
+        display: flex;
+        padding: 15px;
+    }
+    #idea-note input {
+        display: none;
+    }
+    #idea-note input + label {
+        width: 15px;
+        height: 15px;
+        border: 2px solid #aaa;
+        cursor: pointer;
+        display: inline-block;
+    }
+    #idea-note input:checked + label {
+        background-color: #134775;
+    }
+    #idea-note textarea {
+        width: 100%;
+        margin-left: 15px;
+        margin-right: 15px;
+        border: none;
+        resize: none;
+        padding: 3px;
+        line-height: 1.5;
+    }
+    #idea-note i {
+       color: #134775; 
+       cursor: pointer;
+    }
+    #idea-note i:hover {
+        color: tomato;
+    }
+
+    .note-height {
+        height: 244px;
     }
 </style>

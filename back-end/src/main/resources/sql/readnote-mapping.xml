@@ -23,7 +23,10 @@
 	
 	<update id="updateNote" parameterType="readNote">
 		UPDATE read_note
-		SET note_desc=#{noteDesc}
+		<set>
+			<if test="noteDesc!=null">note_desc=#{noteDesc}</if>
+			<if test="notePage!=null">note_page=#{notePage}</if>
+		</set>
 		WHERE note_code=#{noteCode}
 	</update>
 	
