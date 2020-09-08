@@ -24,4 +24,69 @@
 		INSERT INTO read_list(user_email, book_isbn, read_date)
 		VALUES(#{userEmail}, #{bookIsbn}, CURDATE())
 	</insert>
+	
+	<select id="selectRead" parameterType="string" resultMap="readListRM">
+		SELECT *
+		FROM read_list r
+		JOIN book b USING(book_isbn)
+		WHERE user_email=#{value}
+		ORDER BY read_date
+	</select>
+	
+	<select id="selectCheck" parameterType="readList" resultMap="readListRM">
+		SELECT * FROM read_list
+		WHERE user_email=#{userEmail}
+		AND book_isbn=#{bookIsbn}
+	</select>
+	
+	<update id="updateRead" parameterType="readList">
+		UPDATE read_list
+		<if test="readCheck.equals('1일 후')">
+			SET 
+				read_date = DATE_ADD(read_date, INTERVAL 1 DAY),
+				read_check = #{readCheck}
+		</if>
+		<if test="readCheck.equals('3일 후')">
+			SET 
+				read_date = DATE_ADD(read_date, INTERVAL 2 DAY),
+				read_check = #{readCheck}
+		</if>
+		<if test="readCheck.equals('7일 후')">
+			SET 
+				read_date = DATE_ADD(read_date, INTERVAL 4 DAY),
+				read_check = #{readCheck}
+		</if>
+		<if test="readCheck.equals('15일 후')">
+			SET 
+				read_date = DATE_ADD(read_date, INTERVAL 8 DAY),
+				read_check = #{readCheck}
+		</if>
+		<if test="readCheck.equals('30일 후')">
+			SET 
+				read_date = DATE_ADD(read_date, INTERVAL 15 DAY),
+				read_check = #{readCheck}
+		</if>
+		<if test="readCheck.equals('60일 후')">
+			SET 
+				read_date = DATE_ADD(read_date, INTERVAL 30 DAY),
+				read_check = #{readCheck}
+		</if>
+		<if test="readCheck.equals('완료')">
+			SET read_check = #{readCheck}
+		</if>
+		WHERE read_code=#{readCode}
+	</update>
+	
+	<delete id="deleteRead" parameterType="int">
+		DELETE FROM read_list
+		WHERE read_code=#{value}
+	</delete>
+	
+	<select id="selectDetail" parameterType="readList" resultMap="readListRM">
+		SELECT *
+		FROM read_list r
+		JOIN book b USING(book_isbn)
+		WHERE user_email=#{userEmail}
+		AND book_isbn=#{bookIsbn}
+	</select>
 </mapper>
