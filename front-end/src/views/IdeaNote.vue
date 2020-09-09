@@ -44,13 +44,13 @@
               <p>출판사 : {{note.book.bookPublisher}}</p>
               <p>저자 : {{note.book.bookAuthor}}</p>
               <h5>본 것 (What I See)</h5>
-              <div id="read-note" v-for="read in readNote" v-bind:key="read">
+              <div :id="'read-note-'+read.noteCode" v-for="read in readNote" v-bind:key="read">
                   <p>
                       <input type="text" placeholder="위치.." @keyup.enter="updateReadPage(read.noteCode, $event)" v-model="read.notePage">
                       <button @click="deleteReadNote(read.noteCode)">삭제</button>
                   </p>
                   <resizable-textarea>
-                      <textarea id="read-note-desc" placeholder="내용을 입력해주세요.." @keyup="updateReadNote(read.noteCode, $event)" v-model="read.noteDesc"></textarea>
+                      <textarea :id="'read-note-desc-'+read.noteCode" placeholder="내용을 입력해주세요.." @keyup="updateReadNote(read.noteCode, $event)" v-model="read.noteDesc"></textarea>
                   </resizable-textarea>
               </div>
               <div id="read-note">
@@ -227,7 +227,7 @@ export default {
             axios
                 .delete('http://localhost:7777/api/readNote/' + noteCode)
                 .then(response => {
-                    location.reload(true);
+                    document.querySelector('#read-note-'+noteCode).style.display="none";
                 })
         },
         insertIdeaNote(readCode, event) {
@@ -396,36 +396,37 @@ export default {
         margin-bottom: 15px;
     }
 
-    #read-note {
+    /* read-note */
+    [id^=read-note] {
         display: flex;
         font-size: 0.9rem;
         margin-bottom: 20px;
     }
-    #read-note p {
+    [id^=read-note] p {
         display: flex;
         flex-direction: column;
         justify-content: space-between;
     }
-    #read-note p * {
+    [id^=read-note] p * {
         line-height: 1.5;
         padding: 3px;
     }
-    #read-note p button {
+    [id^=read-note] p button {
         border: none;
         background: none;
         cursor: pointer;
     }
-    #read-note p button:hover {
+    [id^=read-note] p button:hover {
         color: tomato;
     }
-    #read-note p input {
+    [id^=read-note] p input {
         border: none;
         font-weight: bold;
         resize: none;
         width: 120px;
         margin-left: 15px;
     }
-    #read-note > textarea {
+    [id^=read-note] > textarea {
         width: 100%;
         resize: none;
         border: none;
