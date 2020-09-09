@@ -29,7 +29,7 @@
             userName: name,
             userEmail: email
         });
-        localStorage.setItem('bookToken', response.data);
+        localStorage.setItem('bookToken', email);
         location="/";
     } catch(error) {
         socialLogin();
@@ -41,7 +41,7 @@
       const response = await axios.post('http://localhost:7777/api/login', {
         userEmail: email
       });
-      localStorage.setItem('bookToken', response.data);
+      localStorage.setItem('bookToken', email);
       location="/";
     } catch(error) {
       console.log(error);

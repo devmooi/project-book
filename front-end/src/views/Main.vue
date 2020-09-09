@@ -18,7 +18,7 @@
                 <input type="search" placeholder="책 검색..." @keyup.enter="search" v-model="keyword"></label>
             </div>
 
-            <div id="search-result" v-for="book in books" v-bind:key="book">
+            <div id="search-keyword-result" v-for="book in books" v-bind:key="book">
                 <div id="search-result-image">
                     <img :src="book.image">
                     <span @click.prevent="insertBook(book)">읽을 책 추가</span>
@@ -213,7 +213,7 @@ export default {
         width: 900px;
     }
 
-    #search-result {
+    #search-keyword-result {
         display: flex;
         margin: 30px;
     }

@@ -22,7 +22,10 @@
 	
 	<update id="updateIdea" parameterType="ideaNote">
 		UPDATE idea_note
-		SET idea_desc=#{ideaDesc}
+		<set>
+			<if test="ideaDesc!=null">idea_desc=#{ideaDesc}</if>
+			<if test="ideaCheck!=null">idea_check=#{ideaCheck}</if>
+		</set>
 		WHERE idea_code=#{ideaCode}
 	</update>
 	

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="idea-container">
       <Navigation></Navigation>
       <section>
           <div id="idea-list">
@@ -62,22 +62,27 @@
                   </resizable-textarea>
               </div>
               <h5>적용할 것 (What I Apply)</h5>
-              <div id="idea-note" v-for="idea in ideaNote" v-bind:key="idea">
-                  <input type="checkbox" id="idea-check">
-                  <label for="idea-check"></label>
-                  <resizable-textarea>
-                      <textarea placeholder="할일을 입력해주세요.." v-model="idea.ideaDesc" @keyup.enter="updateIdeaNote(idea.ideaCode, $event)"></textarea>
-                  </resizable-textarea>
-                  <i class="fas fa-times" @click="deleteIdeaNote(idea.ideaCode)"></i>
-              </div>
-              <div id="idea-note">
-                  <input type="checkbox" id="idea-check">
-                  <label for="idea-check"></label>
-                  <resizable-textarea>
-                      <textarea placeholder="할일을 입력해주세요.." class="note-height" @keyup.enter="insertIdeaNote(note.readCode, $event)"></textarea>
-                  </resizable-textarea>
-                  <i class="fas fa-times"></i>
-              </div>
+                <div :id="'idea-note-'+idea.ideaCode" v-for="idea in ideaNote" v-bind:key="idea">
+                    <div v-if="idea.ideaCheck=='false'">
+                        <input type="checkbox" :id="'idea-check-'+idea.ideaCode" @change="updateIdeaCheck(idea.ideaCode, $event)">
+                        <label :for="'idea-check-'+idea.ideaCode"></label>
+                        <input type="text" :id="'idea-todo-'+idea.ideaCode" placeholder="할일을 입력해주세요.." v-model="idea.ideaDesc" @keyup.enter="updateIdeaNote(idea.ideaCode, $event)">
+                        <i class="fas fa-times" @click="deleteIdeaNote(idea.ideaCode, $event)"></i>
+                    </div>
+                    <div v-if="idea.ideaCheck=='true'">
+                        <input type="checkbox" :id="'idea-check-'+idea.ideaCode" @change="updateIdeaCheck(idea.ideaCode, $event)" checked>
+                        <label :for="'idea-check-'+idea.ideaCode"></label>
+                        <input type="text" :id="'idea-todo-'+idea.ideaCode" placeholder="할일을 입력해주세요.." v-model="idea.ideaDesc" @keyup.enter="updateIdeaNote(idea.ideaCode, $event)" style="text-decoration:line-through">
+                        <i class="fas fa-times" @click="deleteIdeaNote(idea.ideaCode, $event)"></i>
+                    </div>                    
+                </div>
+                <div id="idea-note">
+                    <div>
+                        <input type="checkbox" id="idea-check">
+                        <label for="idea-check"></label>
+                        <input type="text" placeholder="할일을 입력해주세요.." @keyup.enter="insertIdeaNote(note.readCode, $event)">
+                    </div>
+                </div>
           </div>
       </section>
   </div>
@@ -242,11 +247,26 @@ export default {
                     ideaCode:ideaCode
                 });          
         },
-        deleteIdeaNote(ideaCode) {
+        updateIdeaCheck(ideaCode, event) {
+            let check = document.querySelector('#idea-check-'+ideaCode).checked;
+            axios
+                .put('http://localhost:7777/api/ideaNote', {
+                    ideaCheck: check,
+                    ideaCode: ideaCode
+                })
+                .then(response => {
+                    if(check==true) {
+                        document.querySelector('#idea-todo-'+ideaCode).style.textDecoration="line-through";
+                    } else {
+                        document.querySelector('#idea-todo-'+ideaCode).style.textDecoration="none";
+                    }
+                });
+        },
+        deleteIdeaNote(ideaCode, event) {
             axios
                 .delete('http://localhost:7777/api/ideaNote/' + ideaCode)
                 .then(response => {
-                    location.reload(true);
+                    document.querySelector('#idea-note-'+ideaCode).style.display="none";
                 })            
         }
     }
@@ -254,9 +274,6 @@ export default {
 </script>
 
 <style scoped>
-    body {
-        background: white !important;
-    }
     section {
         display: flex;
         padding-left: 85px;
@@ -273,6 +290,10 @@ export default {
         outline: none;
     }
 
+    #idea-container {
+        background: white;
+        height: 100vh;
+    }
     #idea-list {
         height: 100vh;
         position: fixed;
@@ -372,11 +393,13 @@ export default {
         clear: both;
         margin-top: 50px;
         margin-left: 15px;
+        margin-bottom: 15px;
     }
 
     #read-note {
         display: flex;
         font-size: 0.9rem;
+        margin-bottom: 20px;
     }
     #read-note p {
         display: flex;
@@ -384,7 +407,6 @@ export default {
         justify-content: space-between;
     }
     #read-note p * {
-        margin: 15px;
         line-height: 1.5;
         padding: 3px;
     }
@@ -401,51 +423,51 @@ export default {
         font-weight: bold;
         resize: none;
         width: 120px;
+        margin-left: 15px;
     }
     #read-note > textarea {
-        margin: 15px 15px 15px 0;
         width: 100%;
         resize: none;
         border: none;
         padding: 3px;
         line-height: 1.5;
     }
-
-    #idea-note {
+    
+    /* idea-note */
+    [id^=idea-note] div {
         display: flex;
-        padding: 15px;
-    }
-    #idea-note input {
-        display: none;
-    }
-    #idea-note input + label {
-        width: 15px;
-        height: 15px;
-        border: 2px solid #aaa;
-        cursor: pointer;
-        display: inline-block;
-    }
-    #idea-note input:checked + label {
-        background-color: #134775;
-    }
-    #idea-note textarea {
-        width: 100%;
+        justify-content: center;
         margin-left: 15px;
         margin-right: 15px;
+        margin-bottom: 10px;
+        align-items: center;
+    }
+    [id^=idea-note] input[type=checkbox] {
+        display: none;
+    }
+    [id^=idea-note] input[type=checkbox]+label {
+        width: 16px;
+        height: 16px;
+        border: 2px solid #aaa;
+        display: inline-block;
+        cursor: pointer;
+    }
+    [id^=idea-note] input[type=checkbox]:checked+label {
+        background: #134775;
+    }
+    [id^=idea-note] input[type=text] {
+        width: 100%;
+        margin-left: 10px;
+        margin-right: 10px;
         border: none;
-        resize: none;
-        padding: 3px;
+        padding: 5px;
         line-height: 1.5;
     }
-    #idea-note i {
-       color: #134775; 
-       cursor: pointer;
+    [id^=idea-note] i {
+        color: #134775;
+        cursor: pointer;
     }
-    #idea-note i:hover {
+    [id^=idea-note] i:hover {
         color: tomato;
-    }
-
-    .note-height {
-        height: 244px;
     }
 </style>
