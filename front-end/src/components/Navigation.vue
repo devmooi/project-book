@@ -1,9 +1,9 @@
 <template>
   <nav>
-      <h1><a href="/">book</a></h1>
+      <h1><a href="/book">book</a></h1>
       <ul>
-          <li><a href="/bookList"><i class="far fa-heart"></i></a></li>
-          <li><a href="/ideaNote"><i class="far fa-star"></i></a></li>
+          <li><a href="/book/bookList"><i class="far fa-heart"></i></a></li>
+          <li><a href="/book/ideaNote"><i class="far fa-star"></i></a></li>
       </ul>
       <p><i class="fas fa-sign-out-alt" @click="logout"></i></p>
   </nav>
@@ -15,7 +15,7 @@ export default {
     methods: {
         logout() {
             localStorage.removeItem('bookToken');
-            location.href="/login.html";
+            location.href="/book/login.html";
         }
     }
 }

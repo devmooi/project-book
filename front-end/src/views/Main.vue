@@ -45,7 +45,7 @@ function getToken() {
 }
 const token = getToken();
 if(token === null) {
-    location.assign('/login.html');
+    location.assign('/book/login.html');
 }
 export default {
     name: 'Main',
