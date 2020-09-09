@@ -13,13 +13,13 @@ const routes = [
     component: Main
   },
   {
-    path: "/bookList",
+    path: "/book/bookList",
     name: "BookList",
     component: BookList,
     props: true
   },
   {
-    path: "/ideaNote",
+    path: "/book/ideaNote",
     name: "IdeaNote",
     component: IdeaNote,
     props: true

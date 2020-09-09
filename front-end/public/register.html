@@ -133,7 +133,7 @@
         }
         const token = getToken();
         if(token!==null) {
-            location.assign('/');
+            location.assign('/book');
         }
 	    var app = new Vue({
 	        el: '#container',
@@ -154,7 +154,7 @@
 	                    })
 	                    .then(response => {
 	                        localStorage.setItem('bookToken', response.data);
-                            location="/";
+                            location="/book";
 	                    })
 	                    .catch(error => {
                             alert('이미 가입된 이메일 주소입니다.');
@@ -194,7 +194,7 @@
 	                    })
 	                    .then(response => {
 	                        localStorage.setItem('bookToken', response.data);
-                            location="/";
+                            location="/book";
 	                    })
 	                    .catch(error => {
                             axios
@@ -203,7 +203,7 @@
                                 })
                                 .then(response => {
                                     localStorage.setItem('bookToken', response.data);
-                                    location="/";
+                                    location="/book";
                                 })
 	                    })
                 },

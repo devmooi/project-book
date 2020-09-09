@@ -133,7 +133,7 @@
         }
         const token = getToken();
         if(token!==null) {
-            location.assign('/');
+            location.assign('book');
         }
 	    var app = new Vue({
 	        el: '#container',
@@ -161,7 +161,7 @@
                                 return;
                             }
                             localStorage.setItem('bookToken', token);
-                            location="/";
+                            location="book";
 	                    })
 	                    .catch(error => {
                             console.log(error);
@@ -200,7 +200,7 @@
 	                    })
 	                    .then(response => {
 	                        localStorage.setItem('bookToken', response.data);
-                            location="/";
+                            location="book";
 	                    })
 	                    .catch(error => {
 	                        axios
@@ -209,7 +209,7 @@
                                 })
                                 .then(response => {
                                     localStorage.setItem('bookToken', response.data);
-                                    location="/";
+                                    location="book";
                                 })
 	                    })  
                 },
